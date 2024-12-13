@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BookZone</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="icon" href="../images/main-logo.png" type="image/png">
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <img src="../images/main-logo.png" alt="BookZone Logo" class="logo">
+            <ul>
+                <li><a href="../index.html">Главная</a></li>
+                <span>|</span>
+                <li><a href="catalog.html">Каталог</a></li>
+                <span>|</span>
+                <li><a href="popular.html">Популярные</a></li>
+                <span>|</span>
+                <li class="genres">
+                    <a href="genres.html">Жанры</a>
+                    <ul class="genres-submenu">
+                        <li>Роман</li>
+                        <li>Драма</li>
+                        <li>Детектив</li>
+                    </ul>
+                </li>
+                <span>|</span>
+                <li><a href="authors.html">Авторы</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <h1>Выберите жанры</h1>
+        <div class="genre-buttons">
+            <button class="genre-filter" data-genre="Роман">Роман</button>
+            <button class="genre-filter" data-genre="Детектив">Детектив</button>
+            <button class="genre-filter" data-genre="Бестселлер">Бестселлер</button>
+            <button class="genre-filter" data-genre="Роман">Ужасы</button>
+            <button class="genre-filter" data-genre="Детектив">Фантастика</button>
+            <button class="genre-filter" data-genre="Бестселлер">Приключения</button>
+            <button class="genre-filter" data-genre="Роман">Комедия</button>
+            <button class="genre-filter" data-genre="Детектив">Триллер</button>
+            <button class="genre-filter" data-genre="Бестселлер">Фикшн</button>
+            <button class="genre-filter" data-genre="Роман">Мистерия</button>
+            <button class="genre-filter" data-genre="all">Все</button>
+        </div>
+    
+        <div class="book-card">
+            <div class="bookcard" data-genres="Роман, Детектив">
+                <a href="../Books/Joel-Dicker/pravda_o_dele_garri_kveberta/pravda-o-dele-garri-kveberta.html">
+                    <img src="../images/pravda-o-dele-garri-kveberta-logo.png" alt="Правда о деле Гарри Квеберта">
+                </a>
+                <p class="title">Правда о деле Гарри Квеберта</p>
+            </div>
+            <div class="bookcard" data-genres="Детектив">
+                <a href="#">
+                    <img src="../images/another-book.png" alt="Детективная книга">
+                </a>
+                <p class="title">Детективная книга</p>
+            </div>
+            <div class="bookcard" data-genres="Роман">
+                <a href="#">
+                    <img src="../images/romance-book.png" alt="Роман">
+                </a>
+                <p class="title">Романтическая книга</p>
+            </div>
+        </div>
+    </main>
+
+
+    <footer>
+    </footer>
+    <script>
+    const buttons = document.querySelectorAll('.genre-filter');
+    const books = document.querySelectorAll('.bookcard');
+    const selectedGenres = new Set();
+
+    buttons.forEach(button => {
+        button.addEventListener('click', () => {
+            const genre = button.dataset.genre;
+
+            if (genre === 'all') {
+                selectedGenres.clear();
+                buttons.forEach(btn => btn.classList.remove('selected')); 
+                button.classList.add('selected');
+            } else {
+                // Если жанр уже выбран, убираем его
+                if (selectedGenres.has(genre)) {
+                    selectedGenres.delete(genre);
+                    button.classList.remove('selected'); // Убирает стиль
+                } else {
+                    selectedGenres.add(genre);
+                    button.classList.add('selected'); // Добавляет стиль выбранной кнопке
+                }
+                document.querySelector('[data-genre="all"]').classList.remove('selected');
+            }
+
+            books.forEach(book => {
+                const genres = book.dataset.genres.split(', ').map(g => g.trim());
+
+                if (selectedGenres.size === 0) {
+                    book.classList.add('active');
+                } else {
+                    const matches = [...selectedGenres].some(genre => genres.includes(genre));
+                    if (matches) {
+                        book.classList.add('active');
+                    } else {
+                        book.classList.remove('active');
+                    }
+                }
+            });
+        });
+    });
+
+
+    </script>
+    
+</body>
+</html>
